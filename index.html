@@ -136,7 +136,7 @@
             check_cf = confirm(`Do you want order ${str} magazins for ${rdDuration_value.toLowerCase()} and to pay with ${rdPayment_value.toLowerCase()}?`)
             if (check_cf == 1) {
                 alert(`Thanks you very much for your order, we will supply as soon as possible the magazins for you to the address:
-                        Mr.${f.txtFirstName.value + f.txtLastName.value}
+                        Mr.${f.txtFirstName.value + " " + f.txtLastName.value}
                         ${f.taAddress.value}`)
             }
             f.txtLastName.focus()
