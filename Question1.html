@@ -1,0 +1,148 @@
+<html>
+
+<head>
+    <title>Form Validation</title>
+    <meta http-equiv="content-type" content="charset=utf-8">
+
+</head>
+
+<body style="background-color: rgb(227, 245, 226)">
+    <form name="f" method="get" action="#">
+        <h1 align="center" style="color:green;">
+            Subcription Form
+        </h1>
+        <fieldset>
+            <legend>Personal Information</legend>
+            Last name: <input type="text" name="txtLastName" size="30">
+            First name: <input type="text" name="txtFirstName" size="30">
+            <br><br>
+            <input type="radio" name="rdGender" value="1">Male
+            <input type="radio" name="rdGender" value="0">Female
+            <br><br>
+            Address: <br>
+            <textarea name="taAddress" cols="40" rows="10"></textarea>
+        </fieldset>
+        <fieldset>
+            <legend>Magazine Subcription for</legend>
+            <input type="checkbox" name="ckMagazine" value="Time">Time
+            <input type="checkbox" name="ckMagazine" value="Newsweek">Newsweek
+            <input type="checkbox" name="ckMagazine" value="Sunday">Sunday
+            <input type="checkbox" name="ckMagazine" value="Vogue">Vogue
+            <input type="checkbox" name="ckMagazine" value="People">People
+        </fieldset>
+        <fieldset>
+            <legend>Duration</legend>
+            <input type="radio" name="rdDuration" value="1 Years">1 Years
+            <input type="radio" name="rdDuration" value="3 Years">3 Years
+            <input type="radio" name="rdDuration" value="5 Years">5 Years
+        </fieldset>
+        <fieldset>
+            <legend>Payment</legend>
+            <input type="radio" name="rdPayment" value="Cash">Cash
+            <input type="radio" name="rdPayment" value="Credit card">Credit Card
+        </fieldset>
+        <div style="margin: 15px 0px 0px 2px">
+            <input type="button" value="Process" onclick="return check()" title="Submit" style="
+            height: 30px; width: 100px"> &nbsp;
+            <input type="reset" style="
+            height: 30px; width: 100px">
+        </div>
+    </form>
+    <script>
+        function check() {
+
+            if (f.txtLastName.value == "") {
+                alert("Last name must input");
+                f.txtLastName.focus();
+                return false;
+            }
+            if (f.txtFirstName.value == "") {
+                alert("First name must input");
+                f.txtFirstName.focus();
+                return false;
+            }
+            t = 0;
+            for(i=0;i<f.rdGender.length;i++)
+                if (f.rdGender[i].checked)
+                    t++;
+            if (t==0){
+                alert("Must choose Gender");
+                return false;
+            }
+            if (f.taAddress.value == "") {
+                alert("Address must input");
+                f.taAddress.focus();
+                return false;
+            }
+            //chọn tối thiểu 1 magazine
+            t = 0;
+            for (i = 0; i < f.ckMagazine.length; i++)
+                if (f.ckMagazine[i].checked)
+                    t++;
+            if (t < 1) {
+                alert("You must choose at lease 1 magazines");
+                return false;
+            }
+            t = 0;
+            for (i = 0; i < f.rdDuration.length; i++)
+                if (f.rdDuration[i].checked) {
+                    rdDuration_value = f.rdDuration[i].value;
+                    t++;
+                }
+
+            if (t == 0) {
+                alert("Must choose Duration");
+                return false;
+            }
+            t = 0;
+            for (i = 0; i < f.rdPayment.length; i++)
+                if (f.rdPayment[i].checked) {
+                    rdPayment_value = f.rdPayment[i].value;
+                    ++t;
+                }
+
+            if (t == 0) {
+                alert("Must choose Payment");
+                return false;
+            }
+            // Khi form được điền chính xác
+            str = "";
+            count = 0;
+            for (i = 0; i < f.ckMagazine.length; i++) {
+                if (f.ckMagazine[i].checked) {
+                    count += 1;
+                    if (count == 2) {
+                        str += ", " + f.ckMagazine[i].value;
+                    }
+                    if (count == 1) {
+                        str += f.ckMagazine[i].value;
+                    }
+                    if (count > 2) {
+                        str += ", " + f.ckMagazine[i].value;
+                    }
+                }
+            }
+            if (count > 2) {
+                if (count != f.ckMagazine.length) {
+                    //Cut string -> substr(start, end) -> Result = Value of checkbox was checked at last position.
+                    str_last = str.substr(str.length - 1 - f.ckMagazine[count].value.length, str.length);
+                    str = str.replace(str_last, "and " + str_last)
+                }
+                else {
+                    str_last = str.substr(str.length - 1 - f.ckMagazine[count - 1].value.length, str.length);
+                    str = str.replace(str_last, "and " + str_last)
+                }
+            }
+            check_cf = confirm(`Do you want order ${str} magazins for ${rdDuration_value.toLowerCase()} and to pay with ${rdPayment_value.toLowerCase()}?`)
+            if (check_cf == 1) {
+                alert(`Thanks you very much for your order, we will supply as soon as possible the magazins for you to the address:
+                        Mr.${f.txtFirstName.value + f.txtLastName.value}
+                        ${f.taAddress.value}`)
+            }
+            f.txtLastName.focus()
+        }
+
+    </script>
+</body>
+
+</html>
