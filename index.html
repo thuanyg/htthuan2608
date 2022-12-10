@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://scontent.fhan7-1.fna.fbcdn.net/v/t39.30808-6/301389786_906888100271738_5041481036211762009_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=fZOx268uk-IAX8CoVhq&_nc_ht=scontent.fhan7-1.fna&oh=00_AfCwMqdk2EXQ9VxOKQmUcyustPfDo_-1cBbFs1IfioVpzQ&oe=63991CFE" type="image/x-icon">
     <title>Trang đăng nhập</title>
     <style>
         * {
@@ -17,11 +18,14 @@
             font-size: 17px;
             width: 100%;
             height: 100vh;
+            background: rgb(2, 0, 36);
+            background: linear-gradient(144deg, rgba(2, 0, 36, 1) 0%, rgba(219, 156, 47, 1) 26%, rgba(0, 212, 255, 1) 100%);
         }
 
         h1 {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            font-size: 40px;
         }
 
         .login {
@@ -29,17 +33,24 @@
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
-            padding: 70px 40px;
+            padding: 100px 40px;
             border: 1px solid #ccc;
-            border-radius: 3px;
+            border-radius: 10px;
+            background: rgb(34, 193, 195);
+            background: linear-gradient(0deg, rgba(34, 193, 195, 1) 0%, rgba(241, 176, 37, 1) 100%);
+        }
+
+        label {
+            font-size: 24px;
         }
 
         .label {
             display: inline-block;
+            margin-right: 10px;
         }
 
-        .label2 { 
-            margin-right: 36px;
+        .label2 {
+            margin-right: 61.7px;
         }
 
         .form-control {
@@ -47,31 +58,44 @@
         }
 
         .form-control input {
-            height: 30px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
+            height: 40px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
             padding: 5px 10px;
-            font-size: 16px;
+            font-size: 17px;
+        }
+
+        .form-control input:focus {
+            border: 4px solid rgb(55, 0, 255);
+            border-radius: 2px;
         }
 
         .form-btn {
-            margin-left: 32px;
-            margin-top: 18px;
-            /* position: relative; */
+           width: 351px;
+           margin-left: 110px;
+           margin-top: 40px;
         }
 
         .form-btn input {
-            height: 25px;
-            padding: 0 5px;
-            /* border: none; */
+            padding: 14px 15px;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 15px;
         }
+        .form-btn input:hover {
+            background-color: black;
+            color: rgb(255, 255, 255);
+        }
+        .form-btn input[type="reset"] {
+            padding: 14px 38px;
+            margin-left: 20px;
+        }
+
         span {
             display: block;
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
+            position: relative;
+            bottom: -30px;
+            left: -55px;
             padding: 3px 3px;
             font-size: 16px;
             text-align: center;
@@ -84,7 +108,7 @@
 <body>
     <div class="login">
         <form action="trangchu.html" name="f" onsubmit="return Login()">
-            <h1 class="form-heading">Trang đăng nhập</h1>
+            <h1 class="form-heading">Đăng nhập</h1>
             <div class="form-control">
                 <label for="txtUsername" class="label">Tên đăng nhập</label>
                 <input type="text" name="txtUsername">
@@ -96,7 +120,7 @@
             <div class="form-btn">
                 <input type="submit" value="Đăng nhập">
                 <input type="reset" value="Hủy">
-                <span id="countdown"></span>
+                <span id="countdown">hhh</span>
             </div>
         </form>
     </div>
@@ -110,7 +134,7 @@
         }
         //Create account & save to localstorage 
         setItem('username', 'thuanht');
-        setItem('password', '0205766'); 
+        setItem('password', '0205766');
         // Check Login time 
         var count = 0;
         var btn_login = document.querySelectorAll('.form-btn input')
@@ -150,7 +174,7 @@
             }
             var r_name = /^[a-zA-Z0-9]{6,20}$/
             if (r_name.test(username) == false) {
-                alert("Tên đăng nhập nằm trong khoảng 6-20 ký tự");
+                alert("Tên đăng nhập không hợp lệ");
                 f.txtUsername.focus();
                 return false;
             }
