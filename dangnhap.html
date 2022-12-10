@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang đăng nhập</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-size: 17px;
+            width: 100%;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            padding: 70px 40px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .label {
+            display: inline-block;
+        }
+
+        .label2 { 
+            margin-right: 36px;
+        }
+
+        .form-control {
+            margin: 10px 10px;
+        }
+
+        .form-control input {
+            height: 30px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 5px 10px;
+            font-size: 16px;
+        }
+
+        .form-btn {
+            margin-left: 32px;
+            margin-top: 18px;
+            /* position: relative; */
+        }
+
+        .form-btn input {
+            height: 25px;
+            padding: 0 5px;
+            /* border: none; */
+            cursor: pointer;
+        }
+        span {
+            display: block;
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 3px 3px;
+            font-size: 16px;
+            text-align: center;
+            border-radius: 50%;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login">
+        <form action="trangchu.html" name="f" onsubmit="return Login()">
+            <h1 class="form-heading">Trang đăng nhập</h1>
+            <div class="form-control">
+                <label for="txtUsername" class="label">Tên đăng nhập</label>
+                <input type="text" name="txtUsername">
+            </div>
+            <div class="form-control">
+                <label for="txtPassword" class="label2">Mật khẩu</label>
+                <input type="password" name="txtPassword">
+            </div>
+            <div class="form-btn">
+                <input type="submit" value="Đăng nhập">
+                <input type="reset" value="Hủy">
+                <span id="countdown"></span>
+            </div>
+        </form>
+    </div>
+    <script>
+        var ck = true;
+        function setItem(key, value) {
+            window.localStorage.setItem(key, value);
+        }
+        function getItem(key) {
+            return window.localStorage.getItem(key);
+        }
+        //Create account & save to localstorage 
+        setItem('username', 'thuanht');
+        setItem('password', '0205766'); 
+        // Check Login time 
+        var count = 0;
+        var btn_login = document.querySelectorAll('.form-btn input')
+        function checkLoginTime() {
+            if (count > 3) {
+                alert('Bạn đã đăng nhập sai quá 3 lần. Vui lòng chờ 30 giây để đăng nhập lại!');
+                btn_login[0].setAttribute('disabled', '');
+                setTimeout(() => {
+                    btn_login[0].removeAttribute('disabled', '');
+                    count = 0;
+                }, 30000)
+                countdownTime();
+            }
+        }
+        // Countdown timer reset button
+        function countdownTime() {
+            var timeleft = 30;
+            var downloadTimer = setInterval(function () {
+                if (timeleft <= 0) {
+                    clearInterval(downloadTimer);
+                    // document.getElementById("countdown").innerHTML = "Finished";
+                    document.getElementById("countdown").style.display = "none";
+                } else {
+                    document.getElementById("countdown").innerHTML = 'Please wait ' + timeleft + 's';
+                }
+                timeleft -= 1;
+            }, 1000);
+        }
+        //Submit btn check
+        function Login() {
+            var username = f.txtUsername.value.trim();
+            var password = f.txtPassword.value.trim();
+            if (username == "") {
+                alert("Tên đăng nhập không được để trống");
+                f.txtUsername.focus();
+                return false;
+            }
+            var r_name = /^[a-zA-Z0-9]{6,20}$/
+            if (r_name.test(username) == false) {
+                alert("Tên đăng nhập nằm trong khoảng 6-20 ký tự");
+                f.txtUsername.focus();
+                return false;
+            }
+            if (password == "") {
+                alert("Mật khẩu không được để trống");
+                f.txtPassword.focus();
+                return false;
+            }
+            if (username != getItem('username') || getItem('password') != password) {
+                alert('Tài khoản chưa được đăng ký');
+                count++;
+                checkLoginTime();
+                return false;
+            }
+            alert('Login successful! Redirect to homepage')
+            return true;
+        }
+    </script>
+</body>
+
+</html>
