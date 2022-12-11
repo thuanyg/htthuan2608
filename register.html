@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/avt.jpg" type="image/x-icon">
+    <title>Đăng ký tài khoản - Thuanne</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Poppins:wght@200;300;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            background: #00d2ff;
+            /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #928DAB, #00d2ff);
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #928DAB, #00d2ff);
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        }
+
+        .login {
+            position: relative;
+            width: 400px;
+            padding: 40px 50px;
+            padding-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+            margin: 0 auto;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #D66D75;
+            /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #4b7cc1, #D66D75);
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #cf97aa, #d9d08d);
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        }
+
+        h1 {
+            text-transform: uppercase;
+            text-align: center;
+            font-weight: 550;
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            margin-bottom: 20px;
+        }
+
+        .form-control .label {
+            display: inline-block;
+            width: 120px;
+        }
+
+        .form-control input {
+            width: 170px;
+            padding: 8px;
+            margin-left: 5px;
+            font-size: 14px;
+            outline: none;
+            border-radius: 3px;
+            border: 2px solid #ccc;
+            background-color: rgb(234, 229, 229);
+        }
+
+        .form-control input:focus {
+            border: 2px solid blue;
+            background-color: #a7b8f4;
+        }
+
+        .form-link {
+            text-align: center;
+        }
+
+        .form-link a {
+            text-decoration: none;
+        }
+
+        .form-btn input {
+            text-align: center;
+            font-size: 14px;
+            margin: 20px;
+            width: 90px;
+            height: 40px;
+            border-radius: 3px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-btn input:first-child:hover {
+            background-color: #449f49ca;
+            border: 1px solid black;
+        }
+
+        .form-btn input:nth-child(2):hover {
+            background-color: #3d5596cc;
+            border: 1px solid black;
+        }
+
+        .form-btn {
+            text-align: center;
+        }
+
+        .form-btn span {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login">
+        <form action="dangnhap.html" name="f" onsubmit="return Login()">
+            <h1 class="form-heading">Đăng ký
+            </h1>
+            <div class="form-control">
+                <label for="txtUsername" class="label label_name">Tên đăng nhập</label>
+                <input type="text" name="txtUsername">
+            </div>
+            <div class="form-control">
+                <label for="txtPassword" class="label label_pass">Mật khẩu</label>
+                <input type="password" name="txtPassword">
+            </div>
+            <div class="form-btn">
+                <input type="submit" value="Đăng ký">
+                <input type="reset" value="Hủy">
+                <span id="countdown"></span>
+            </div>
+        </form>
+    </div>
+    <script>
+        function setItem(key, value) {
+            window.localStorage.setItem(key, value);
+        }
+        function getItem(key) {
+            return window.localStorage.getItem(key);
+        }
+        // var k_user, k_pass;
+        // for (var i = 0; i < k_user.length; i++) {
+        //     getItem('username' + i + 1);
+        // }
+        //Create account & save to localstorage 
+        //Submit btn check
+        function Login() {
+            var username = f.txtUsername.value.trim();
+            var password = f.txtPassword.value.trim();
+            if (username == "") {
+                alert("Tên đăng nhập không được để trống");
+                f.txtUsername.focus();
+                return false;
+            }
+            var r_name = /^[a-zA-Z0-9]{6,20}$/
+            if (r_name.test(username) == false) {
+                alert("Tên đăng nhập không hợp lệ");
+                f.txtUsername.focus();
+                return false;
+            }
+
+            if (username == getItem('username')) {
+                alert('Tên tài khoản đã tồn tại');
+                return false;
+            }
+            if (password == "") {
+                alert("Mật khẩu không được để trống");
+                f.txtPassword.focus();
+                return false;
+            } else {
+                setItem('username', username);
+                setItem('password', password);
+                alert("Đăng ký thành công. Chuyển đến trang đăng nhập?")
+            }
+        }
+    </script>
+</body>
+
+</html>
