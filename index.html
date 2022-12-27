@@ -188,12 +188,6 @@
             var date_input = document.getElementById("date").value;
             var gender_input = document.getElementById("gender").value;
             var address_input = document.getElementById("adress").value;
-            if (!id_input && !fullName_input && !date_input && !gender_input && !address_input) {
-                alert("Bạn chưa nhập thông tin");
-            }
-            if (!id_input){
-                alert("Bạn phải nhập mã sinh viên!!!")
-            }
             var newObj =
             {
                 id: id_input,
@@ -208,7 +202,12 @@
                     isSameID = true;
                 }
             }
-            if (isSameID) {
+            if (!id_input && !fullName_input && !date_input && !gender_input && !address_input) {
+                alert("Bạn chưa nhập thông tin");
+            }
+            else if(!id_input){
+                alert("Phải nhập MSSV");
+            } else if (isSameID) {
                 alert("MSSV đã tồn tại");
             }
             else {
