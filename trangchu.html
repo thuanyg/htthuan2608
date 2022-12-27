@@ -77,10 +77,49 @@
             transform: translateX(-12px);
             cursor: pointer;
         }
+
+        .add-btn {
+            /* position: relative; */
+            cursor: pointer;
+            padding: 10px;
+            margin-top: 20px;
+            border: 1px solid black;
+            background-color: beige;
+            border-radius: 3px;
+        }
+
+        button:hover {
+            background-color: rgb(90, 160, 127);
+        }
+
+        .input-control {
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .input-control label {
+            /* background-color: aqua; */
+            display: inline-block;
+            width: 100px;
+            font-size: 18px;
+            text-align: start;
+        }
+
+        .input-control input {
+            height: 30px;
+            border-radius: 3px;
+            border: 1px solid rgb(171, 171, 171);
+            font-size: 16px;
+            padding: 5px 10px;
+        }
+
+        #insertRow-btn {
+            display: none;
+        }
     </style>
 </head>
 
-<body>
+<body onload="renderStudent()">
     <div id="main">
         <div id="banner">
             <img src="images/Banner.png" alt="Banner">
@@ -91,7 +130,93 @@
             </div>
             <div class="content">
                 <h2>Thông tin sinh viên</h2>
-                <table>
+                <table id="table_students"></table>
+                <div id="addnew">
+                </div>
+                <button id="insertRow-btn" class="add-btn" style="width: 100px;">Thêm SV</button>
+                <button id="addInput" class="add-btn" onclick="addNewForm()">Tạo mới</button>
+            </div>
+            <div class="right-menu">
+                <img src="images/RightMenu.png" alt="LeftMenu">
+            </div>
+        </div>
+    </div>
+    <script>
+        var students = []
+        // Click button "Thêm mới"
+        function addNewForm() {
+            var addPlace = document.getElementById("addnew");
+            var input = `
+                <div class="input-control">
+                    <label for="id">Mã sinh viên</label>
+                    <input type="text" class="input" id="id">
+                </div>
+                <div class="input-control">
+                    <label for="fullName">Họ và tên</label>
+                    <input type="text" class="input" id="fullName">
+                </div>
+                <div class="input-control">
+                    <label for="date">Ngày sinh</label>
+                    <input type="text" class="input" id="date">
+                </div>
+                <div class="input-control">
+                    <label for="gender">Giới tính</label>
+                    <input type="text" class="input" id="gender">
+                </div>
+                <div class="input-control">
+                    <label for="address">Quê quán</label>
+                    <input type="text" class="input" id="adress">
+                </div>
+                        `
+            addPlace.innerHTML = input;
+            var btn_add = document.querySelector("#addInput");
+            btn_add.setAttribute("hidden", "")
+            var insertRowButton = document.getElementById("insertRow-btn");
+            insertRowButton.style.display = "unset";
+        }
+
+        function addValueInput() {
+            var ListStudentData;
+            if(!JSON.parse(localStorage.getItem("LIST STUDENTS"))){
+                ListStudentData = [];
+            }
+            else ListStudentData = JSON.parse(localStorage.getItem("LIST STUDENTS"))
+            var id_input = document.getElementById("id").value;
+            var fullName_input = document.getElementById("fullName").value;
+            var date_input = document.getElementById("date").value;
+            var gender_input = document.getElementById("gender").value;
+            var address_input = document.getElementById("adress").value;
+            var newObj =
+            {
+                id: id_input,
+                fullName: fullName_input,
+                date: date_input,
+                gender: gender_input,
+                address: address_input
+            };
+            var isSameID;
+            for (var i = 0; i < ListStudentData.length; i++) {
+                if (ListStudentData[i].id == id_input || !ListStudentData) {
+                    isSameID = true;
+                }
+            }
+            if (isSameID) {
+                alert("MSSV đã tồn tại");
+            }
+            else {
+                ListStudentData.push(newObj);
+                localStorage.setItem("LIST STUDENTS", JSON.stringify(ListStudentData));
+                renderStudent();
+            }
+        }
+        var insertRowButton = document.getElementById("insertRow-btn");
+        insertRowButton.addEventListener("click", function () {
+            addValueInput();
+            renderStudent();
+        })
+        function renderStudent() {
+            var tableTag = document.getElementById("table_students");
+            var row = `
                     <tr>
                         <th>STT</th>
                         <th>MSSV</th>
@@ -101,118 +226,44 @@
                         <th>Quê quán</th>
                         <th>Xóa</th>
                     </tr>
-                    <tr>
-                        <td>01</td>
-                        <td>0205766</td>
-                        <td>Hoàng Tiến Thuận</td>
-                        <td>26/08/2003</td>
-                        <td>Nam</td>
-                        <td>Bắc Ninh</td>
-                        <td><button class="del-btn" value="btn1">Xóa</button></td>
-                    </tr>
-                    <tr>
-                        <td>02</td>
-                        <td>0189366</td>
-                        <td>Hoàng Trung Hiếu</td>
-                        <td>10/10/2003</td>
-                        <td>Nam</td>
-                        <td>Thanh Hóa</td>
-                        <td><button class="del-btn" value="btn2">Xóa</button></td>
-                    </tr>
-                    <tr>
-                        <td>03</td>
-                        <td>0189311</td>
-                        <td>Vũ Văn Nam</td>
-                        <td>11/08/2003</td>
-                        <td>Nam</td>
-                        <td>Hưng Yên</td>
-                        <td><button class="del-btn" value="btn2">Xóa</button></td>
-                    </tr>
-                    <tr>
-                        <td>04</td>
-                        <td>0201366</td>
-                        <td>Nguyễn Văn Quang</td>
-                        <td>02/02/2003</td>
-                        <td>Nam</td>
-                        <td>Hà Nội</td>
-                        <td><button class="del-btn" value="btn2">Xóa</button></td>
-                    </tr>
-                    <tr>
-                        <td>05</td>
-                        <td>0203366</td>
-                        <td>Nguyễn Hoàng Dũng</td>
-                        <td>19/12/2003</td>
-                        <td>Nam</td>
-                        <td>Thanh Hóa</td>
-                        <td><button class="del-btn" value="btn2">Xóa</button></td>
-                    </tr>
-                    <tr>
-                        <td>06</td>
-                        <td>0189366</td>
-                        <td>Trịnh Hùng Mạnh</td>
-                        <td>10/10/2003</td>
-                        <td>Nam</td>
-                        <td>Hà Nội</td>
-                        <td><button class="del-btn" value="btn2">Xóa</button></td>
-                    </tr>
-                </table>
-            </div>
-            <div class="right-menu">
-                <img src="images/RightMenu.png" alt="LeftMenu">
-            </div>
-        </div>
-    </div>
-    <script>
-        var btn = document.querySelectorAll('button')
-        
+                    `;
+            var ListStudentData = JSON.parse(localStorage.getItem("LIST STUDENTS"));
+            ListStudentData.some((student, index) => {
+                row += `
+                    <tr>  
+                        <td>${index+1}</td>
+                        <td>${student.id}</td>
+                        <td>${student.fullName}</td>
+                        <td>${student.date}</td>
+                        <td>${student.gender}</td>
+                        <td>${student.address}</td>
+                        <td><button class="del-btn" index="${index}" onclick="del_check(this)">Xóa</button></td>
+                    </tr>`
+            })
+            tableTag.innerHTML = row;
+        }
+        function del_check(this_btn) {
+            var msv = this_btn.parentElement.parentElement.querySelector("td:nth-child(2)");
+            var sv_name = this_btn.parentElement.parentElement.querySelector("td:nth-child(3)");
+            var isConfirm = confirm('Bạn chắc chắn muốn xóa sinh viên ' + sv_name.innerText + ' (MSSV ' + msv.innerText + ")");
+            if (isConfirm) {
+                this_btn.parentElement.parentElement.remove();
+                var index = this_btn.getAttribute("index");
+                var ListStudentData = JSON.parse(localStorage.getItem("LIST STUDENTS"));
+                // ListStudentData.splice(1, index);
+                var ListAfter = ListStudentData.filter((item, i) => {
+                    if(i != index) return item 
+                })
+                localStorage.setItem("LIST STUDENTS", JSON.stringify(ListAfter));
+                renderStudent();
+            }
+            else {
+                alert("Đã hủy bỏ xóa");
+            }
+
+        }
 
 
-
-        // function check2() {
-        //     let text;
-        //     if (confirm('Bạn muốn xóa dữ liệu dòng 2 ?') == true) {
-        //         text = "You deleted OK! - Đã Xóa";
-        //     } else {
-        //         text = "You canceled! - Không Xóa";
-        //     }
-        //     alert(text);
-        // }
-        // function check3() {
-        //     let text;
-        //     if (confirm('Bạn muốn xóa dữ liệu dòng 3 ?') == true) {
-        //         text = "You deleted OK! - Đã Xóa";
-        //     } else {
-        //         text = "You canceled! - Không Xóa";
-        //     }
-        //     alert(text);
-        // }
-        // function check4() {
-        //     let text;
-        //     if (confirm('Bạn muốn xóa dữ liệu dòng 4 ?') == true) {
-        //         text = "You deleted OK! - Đã Xóa";
-        //     } else {
-        //         text = "You canceled! - Không Xóa";
-        //     }
-        //     alert(text);
-        // }
-        // function check5() {
-        //     let text;
-        //     if (confirm('Bạn muốn xóa dữ liệu dòng 5 ?') == true) {
-        //         text = "You deleted OK! - Đã Xóa";
-        //     } else {
-        //         text = "You canceled! - Không Xóa";
-        //     }
-        //     alert(text);
-        // }
-        // function check6() {
-        //     let text;
-        //     if (confirm('Bạn muốn xóa dữ liệu dòng 6 ?') == true) {
-        //         text = "You deleted OK! - Đã Xóa";
-        //     } else {
-        //         text = "You canceled! - Không Xóa";
-        //     }
-        //     alert(text);
-        // }
     </script>
 </body>
 
