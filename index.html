@@ -12,11 +12,12 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+        body {
+            width: 100%;
+        }
         #main {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            width: calc(1001px + 41px);
+            margin: 0 auto;
         }
 
         #banner {
@@ -200,12 +201,13 @@
             for (var i = 0; i < ListStudentData.length; i++) {
                 if (ListStudentData[i].id == id_input || !ListStudentData) {
                     isSameID = true;
+                    break;
                 }
             }
             if (!id_input && !fullName_input && !date_input && !gender_input && !address_input) {
                 alert("Bạn chưa nhập thông tin");
             }
-            else if(!id_input){
+            else if (!id_input) {
                 alert("Phải nhập MSSV");
             } else if (isSameID) {
                 alert("MSSV đã tồn tại");
@@ -320,12 +322,27 @@
                     gender: gender_input,
                     address: address_input
                 };
-                ListAfter.splice(index, 0, newObj)
-                localStorage.setItem("LIST STUDENTS", JSON.stringify(ListAfter));
-                renderStudent();
-                alert("Done!!!");
-                addPlace.innerHTML = "";
-                btn_add.style.display = "unset";
+                var checkID;
+                for (var i = 0; i < ListStudentData.length; i++) {
+                    if (ListStudentData[i].id == id_input || !ListStudentData) {
+                        checkID = true; // ID đã tồn tại!!!
+                        break;
+                    }
+                }
+                if (!id_input) {
+                    alert("Phải nhập MSSV");
+                }
+                else if (checkID){
+                    alert("MSSV đã tồn tại");
+                }
+                else {
+                    ListAfter.splice(index, 0, newObj)
+                    localStorage.setItem("LIST STUDENTS", JSON.stringify(ListAfter));
+                    renderStudent();
+                    alert("Done!!!");
+                    addPlace.innerHTML = "";
+                    btn_add.style.display = "unset";
+                }
             })
         }
 
