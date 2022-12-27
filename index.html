@@ -142,6 +142,8 @@
         </div>
     </div>
     <script>
+        var x = document.getElementById("#addInput")
+
         var students = []
         // Click button "Thêm mới"
         function addNewForm() {
@@ -170,14 +172,14 @@
                         `
             addPlace.innerHTML = input;
             var btn_add = document.querySelector("#addInput");
-            btn_add.setAttribute("hidden", "")
+            btn_add.style.display = "none"
             var insertRowButton = document.getElementById("insertRow-btn");
             insertRowButton.style.display = "unset";
         }
 
         function addValueInput() {
             var ListStudentData;
-            if(!JSON.parse(localStorage.getItem("LIST STUDENTS"))){
+            if (!JSON.parse(localStorage.getItem("LIST STUDENTS"))) {
                 ListStudentData = [];
             }
             else ListStudentData = JSON.parse(localStorage.getItem("LIST STUDENTS"))
@@ -186,6 +188,12 @@
             var date_input = document.getElementById("date").value;
             var gender_input = document.getElementById("gender").value;
             var address_input = document.getElementById("adress").value;
+            if (!id_input && !fullName_input && !date_input && !gender_input && !address_input) {
+                alert("Bạn chưa nhập thông tin");
+            }
+            if (!id_input){
+                alert("Bạn phải nhập mã sinh viên!!!")
+            }
             var newObj =
             {
                 id: id_input,
@@ -225,19 +233,21 @@
                         <th>Giới tính</th>
                         <th>Quê quán</th>
                         <th>Xóa</th>
+                        <th>Sửa</th>
                     </tr>
                     `;
             var ListStudentData = JSON.parse(localStorage.getItem("LIST STUDENTS"));
             ListStudentData.some((student, index) => {
                 row += `
                     <tr>  
-                        <td>${index+1}</td>
+                        <td>${index + 1}</td>
                         <td>${student.id}</td>
                         <td>${student.fullName}</td>
                         <td>${student.date}</td>
                         <td>${student.gender}</td>
                         <td>${student.address}</td>
                         <td><button class="del-btn" index="${index}" onclick="del_check(this)">Xóa</button></td>
+                        <td><button class="del-btn" index="${index}" onclick="edit_student(this)">Sửa</button></td>
                     </tr>`
             })
             tableTag.innerHTML = row;
@@ -252,7 +262,7 @@
                 var ListStudentData = JSON.parse(localStorage.getItem("LIST STUDENTS"));
                 // ListStudentData.splice(1, index);
                 var ListAfter = ListStudentData.filter((item, i) => {
-                    if(i != index) return item 
+                    if (i != index) return item
                 })
                 localStorage.setItem("LIST STUDENTS", JSON.stringify(ListAfter));
                 renderStudent();
@@ -261,6 +271,63 @@
                 alert("Đã hủy bỏ xóa");
             }
 
+        }
+        function edit_student(this_btn) {
+            var index = this_btn.getAttribute("index");
+            var addPlace = document.getElementById("addnew");
+            var ListStudentData = JSON.parse(localStorage.getItem("LIST STUDENTS"));
+            var input = `
+                <div class="input-control">
+                    <label for="id">Mã sinh viên</label>
+                    <input type="text" class="input" id="id" value="${ListStudentData[index].id}">
+                </div>
+                <div class="input-control">
+                    <label for="fullName">Họ và tên</label>
+                    <input type="text" class="input" id="fullName" value="${ListStudentData[index].fullName}">
+                </div>
+                <div class="input-control">
+                    <label for="date">Ngày sinh</label>
+                    <input type="text" class="input" id="date" value="${ListStudentData[index].date}">
+                </div>
+                <div class="input-control">
+                    <label for="gender">Giới tính</label>
+                    <input type="text" class="input" id="gender" value="${ListStudentData[index].gender}">
+                </div>
+                <div class="input-control">
+                    <label for="address">Quê quán</label>
+                    <input type="text" class="input" id="adress" value="${ListStudentData[index].address}">
+                </div>
+                <button id="editSV-btn" class="add-btn" style="width: 100px;">Edit SV</button>
+                        `
+            addPlace.innerHTML = input;
+            var btn_add = document.querySelector("#addInput");
+            btn_add.style.display = "none";
+            var insertRowButton = document.getElementById("insertRow-btn");
+            insertRowButton.style.display = "none";
+            document.querySelector("#editSV-btn").addEventListener("click", () => {
+                var ListAfter = ListStudentData.filter((item, i) => {
+                    if (i != index) return item
+                })
+                var id_input = document.getElementById("id").value;
+                var fullName_input = document.getElementById("fullName").value;
+                var date_input = document.getElementById("date").value;
+                var gender_input = document.getElementById("gender").value;
+                var address_input = document.getElementById("adress").value;
+                var newObj =
+                {
+                    id: id_input,
+                    fullName: fullName_input,
+                    date: date_input,
+                    gender: gender_input,
+                    address: address_input
+                };
+                ListAfter.splice(index, 0, newObj)
+                localStorage.setItem("LIST STUDENTS", JSON.stringify(ListAfter));
+                renderStudent();
+                alert("Done!!!");
+                addPlace.innerHTML = "";
+                btn_add.style.display = "unset";
+            })
         }
 
 
